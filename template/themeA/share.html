@@ -1,0 +1,18 @@
+
+{{^SHOW}}
+	Vous n'avez pas les droits pour pouvoir accéder à cela
+{{/SHOW}}
+
+{{#SHOW}}
+	
+	<table width="100%">
+		{{#LIST}}
+			<tr>
+				<td>{{Name}}</td>
+				<td><a href="{{URL}}upload/{{}}/{{Name}}">{{OriginName}}</a></td>
+				<td>{{Date}}</td>
+			</tr>
+		{{/LIST}}
+	</table>
+	
+{{/SHOW}}

@@ -1,0 +1,113 @@
+{{>header}}
+ <!-- FORMULAIRE -->
+            <div class="row">
+              <form class="offset-m1 col m4">
+                <div class="row">
+                  <div class="input-field col m12">
+                    <input id="mail_exp" type="email" class="validate">
+                    <label for="mail_exp" class="grey-text text-darken-4">Votre mail</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12">
+                    <input id="mail_rec" type="email" class="validate">
+                    <label for="mail_rec" class="grey-text text-darken-4">Mail de votre destinataire</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12">
+                    <input id="subjet" type="text" class="validate">
+                    <label for="subjet" class="grey-text text-darken-4">Sujet de votre message</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12">
+                    <input id="content" type="text" class="validate">
+                    <label for="content" class="grey-text text-darken-4">Contenu de votre message</label>
+                  </div>
+                </div>
+                  <div class="row">
+                    <div class="offset-m4 col m6">
+                      <a id="button-next" class="waves-effect waves-light btn grey darken-3">Suivant</a>
+                    </div>
+                  </div>
+              </form>
+
+
+        <!-- BLOC UPLOAD -->
+            <div class="row">
+              <article class="offset-m1 col m4">
+
+                  <div class="row">
+                    <div id="dropfile" class="offset-m2 col m0" >Glissez votre fichier ici</div>
+                  </div>
+
+                  <div class="row">
+                    <p id="dropfiletext" class="offset-m4 col m8">ou</p>
+                  </div>
+
+                  <div class="row">
+                    <input id="uploadfile" class="offset-m2 col m10" type="file"/>
+                  </div>
+
+                  <div class"row">
+                    <div id="filelist" class="offset-m4 col m8">liste des fichiers</div>
+                  </div>
+
+                  <div class "row">
+                    <div class="offset-m2 col m6">
+                      <a id="button-upload" class="waves-effect waves-light btn grey darken-3">Télécharger</a>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div id="filesupload" class="offset-m4 col m8">liste fichiers uploadés </div>
+                  </div>
+
+              </article>
+            </div>
+
+          </div>
+
+
+<script>
+
+
+    $(document).on('dragenter', '#dropfile', function() {
+              $(this).css('background', '#424242');
+              return false;
+    });
+
+    $(document).on('dragover', '#dropfile', function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              $(this).css('background', '#424242');
+              return false;
+    });
+
+    $(document).on('dragleave', '#dropfile', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              $(this).css('background', '#424242');
+              return false;
+    });
+
+
+    $(document).on('drop', '#dropfile', function(e) {
+                if(e.originalEvent.dataTransfer){
+                           if(e.originalEvent.dataTransfer.files.length) {
+                                       // Stop the propagation of the event
+                                       e.preventDefault();
+                                       e.stopPropagation();
+                                       $(this).css('background', '#616161');
+                                       // Main function to upload
+                                       upload(e.originalEvent.dataTransfer.files);
+                           }
+                }
+                else {
+                           $(this).css('background', '#424242');
+                }
+                return false;
+    });
+
+</script>

@@ -1,0 +1,7 @@
+php_value display_errors ON
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
+ 
