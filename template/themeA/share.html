@@ -7,7 +7,7 @@
 
 {{#SHOW}}
 	
-	<table width="100%">
+	<table width="100%" style="background-color: #ffebee">
 		<form id="form-download" action="{{URL_}}downloadCustomArchive/" method="post">
 			{{#LIST}}
 				<tr>
@@ -15,14 +15,14 @@
 						<input type="checkbox" name="fileCheckBox[]" class="filled-in" value="{{Name}}" id="ID-{{Name}}" />
 						<label for="ID-{{Name}}"></label>
 					</td>
-					<td>{{Name}}</td>
 					<td><a href="{{URL_}}public/upload/{{fold}}/{{OriginName}}" download>{{OriginName}}</a></td>
+					<td>{{Name}}</td>
 					<td>{{Date}}</td>
 				</tr>
 			{{/LIST}}
 			<input type="hidden" name="fold" value="{{fold}}"/>
 			<input type="hidden" name="keyUser" value="{{keyUser}}"/>
-			<tr><td colspan="3"><input type="submit" name="send" value="Télécharger" /></td></tr>
+			<tr><td colspan="4"><input type="submit" name="send" value="Télécharger" /></td></tr>
 		</form>
 	</table>
 	

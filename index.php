@@ -30,9 +30,7 @@
 		cronDeleteFile();
 		 
 	}, 'cron');
-	
-	
-	echo "ok";
+
 	//@TODO
 	//on crée l'archive après avoir appuyer sur le boutton terminé
 	$router->map('POST', '/createArchive/', function(){
@@ -59,6 +57,12 @@
 		CTRL_InfoSaved();
 		
 	}, 'uploadAjax');
+	
+	$router->map('GET', '/deleteFileAjax/', function(){
+		$key = "586b7588c414f";
+		$file = "";
+		
+	}, 'deleteFileAjax');
 	
 	
 	$match = $router->match();

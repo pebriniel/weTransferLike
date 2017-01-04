@@ -1,7 +1,7 @@
 {{>header}}
  <!-- FORMULAIRE -->
             <div class="row">
-              <form class="offset-m1 col m4">
+              <form class="offset-m1 col m4" id="myForm">
                 <div class="row">
                   <div class="input-field col m12">
                     <input id="mail_exp" type="email" class="validate">
@@ -16,8 +16,8 @@
                 </div>
                 <div class="row">
                   <div class="input-field col m12">
-                    <input id="subjet" type="text" class="validate" maxlength="50">
-                    <label for="subjet" class="grey-text text-darken-4">Sujet de votre message</label>
+                    <input id="subject" type="text" class="validate" maxlength="50">
+                    <label for="subject" class="grey-text text-darken-4">Sujet de votre message</label>
                   </div>
                 </div>
                 <div class="row">
@@ -120,5 +120,64 @@
 
       $('#disabled').css("display", "none");
     }
-    
+
+
+
+// que se passe t-il au chargement de la page
+//$(document).ready(function() {
+ //verify("#mail_exp", "Veuillez entrer un mail valide");
+ //verify("#mail_rec", "Veuillez entrer un mail valide");
+ //verify("#content", "Veuillez entrer un contenu valide");
+ //verify("#subject", "Veuillez entrer un sujet valide");
+ //});
+
+
+
+  //  function verify(key, text){
+  //     $(key).focusout(function(){
+  //    if ($(key).hasClass("validate", "invalid")){
+  //      alert(text);
+  //    }
+  //    else {
+  //    }
+  //  });
+  // }
+
+  var activebuttonnext = false;
+
+  $(document).ready(function() {
+    $("#button-next").addClass("disabled");
+
+    verify("#mail_exp");
+    verify("#mail_rec");
+    verify("#content");
+    verify("#subject");
+   });
+
+    function verify(key){
+      $(key).keyup(function(){
+          console.log($(this));
+          if($(key).hasClass("invalid") || $(key).val()=='') {
+            $("#button-next").addClass("disabled");
+          }
+
+          verifyAll(["#mail_exp", "#mail_rec", "#content", "#subject"]);
+      });
+    }
+
+    function verifyAll(inputs){
+      var error= 0;
+      for(var i=0; i<inputs.length; i++){
+        if($(inputs[i]).hasClass("invalid") || $(inputs[i]).val()=='') {
+          error++;
+        }
+      }
+        if(error==0){
+          console.log("coucou");
+          $("#button-next").removeClass("disabled");
+        }
+        console.log(error);
+
+    }
+
 </script>
