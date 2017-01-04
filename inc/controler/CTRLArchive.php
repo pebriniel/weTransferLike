@@ -13,8 +13,6 @@ if(isset($index)){
 		$zip = new ZipArchive();
 		$filename = "public/upload/".$fold['Name']."/".uniqid().".zip";
 		
-		
-		
 		if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
 			exit("Impossible d'ouvrir le fichier <$filename>\n");
 		}

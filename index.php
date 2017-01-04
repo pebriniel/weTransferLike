@@ -1,5 +1,5 @@
 <?php
-echo "COUCOU";
+
 /*
 	@TODO : /createArchive/ à revoir
 */
@@ -10,53 +10,61 @@ echo "COUCOU";
 		$load = true;
 		mustacheLoad('body');
 	}, 'home');
-
+	
 	$router->map('GET', '/404/', function(){
 		echo "la page n'existe pas";
 	}, '404');
-
+	
 	//ajax création d'archive custom
 	$router->map('POST', '/downloadCustomArchive/', function(){
 		$index = true;
 		require_once "inc/controler/CTRLCustomArchive.php";
 		echo customCreateArchive();
-
+		
 	}, 'downloadCustomArchive');
-
+	
 	//ajax création d'archive custom
 	$router->map('GET', '/cron/', function(){
 		$index = true;
 		require_once "inc/controler/CTRLCron.php";
 		cronDeleteFile();
-
+		 
 	}, 'cron');
-
-
-
+	
+	
+	echo "ok";
 	//@TODO
 	//on crée l'archive après avoir appuyer sur le boutton terminé
 	$router->map('POST', '/createArchive/', function(){
 		$index = true;
 		require_once "inc/controler/CTRLArchive.php";
 		CTRL_CreateArchive("586b7588c414f");
-
-	}, 'uploadAjax');
-
+		
+	}, 'createArchive');
+	
 	//on affiche la liste des dossiers
 	$router->map('GET', '/share/[h:keyFold]/[h:keyUser]/', function($keyFold, $keyUser){
 		$index = true;
-
+		
 		require_once "inc/controler/CTRLShare.php";
 		$arrayTpl = CTRL_LoadShare($keyUser, $keyFold, __dir__);
-
+		
 		mustacheLoad('share', $arrayTpl);
 	}, 'share');
+	
+	$router->map('POST', '/uploadAjax/', function(){
+		$index = true;
+		require_once "inc/controler/CTRLInfosaved.php";
 
-
+		CTRL_InfoSaved();
+		
+	}, 'uploadAjax');
+	
+	
 	$match = $router->match();
 
 	// call closure or throw 404 status
-	if( $match && is_callable( $match['target'] ) ) {
+	if( $match && is_callable( $match['target'] ) ) {			
 		call_user_func_array( $match['target'], $match['params'] );
 	} else {
 		// no route was matched

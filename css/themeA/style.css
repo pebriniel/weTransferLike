@@ -41,7 +41,8 @@
 /*CONTENU UPLOAD*/
     article{
       background: rgba(255, 255, 255, 0.7);
-      max-height: 32em;
+      height: 32em;
+      position: relative;
     }
 
     #dropfile{
@@ -60,9 +61,18 @@
     }
 
     #uploadfile{
-      margin-left: 4em;
+      display: none;
     }
 
     #button-upload{
-      margin-left: 3em
+      margin-left: 4em;
+      z-index: -1;
+    }
+
+    #disabled{
+      background: rgba(45, 45, 45, 0.7);
+      height: 32em;
+      position: relative;
+      margin-left: 45.5em;
+      width: 30.4em;
     }

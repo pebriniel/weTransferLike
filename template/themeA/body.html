@@ -16,7 +16,7 @@
                 </div>
                 <div class="row">
                   <div class="input-field col m12">
-                    <input id="subjet" type="text" class="validate">
+                    <input id="subjet" type="text" class="validate" maxlength="50">
                     <label for="subjet" class="grey-text text-darken-4">Sujet de votre message</label>
                   </div>
                 </div>
@@ -28,7 +28,7 @@
                 </div>
                   <div class="row">
                     <div class="offset-m4 col m6">
-                      <a id="button-next" class="waves-effect waves-light btn grey darken-3">Suivant</a>
+                      <a id="button-next" class="waves-effect waves-light btn grey darken-3" onclick="return nextstep();">Suivant</a>
                     </div>
                   </div>
               </form>
@@ -39,11 +39,7 @@
               <article class="offset-m1 col m4">
 
                   <div class="row">
-                    <div id="dropfile" class="offset-m2 col m0" >Glissez votre fichier ici</div>
-                  </div>
-
-                  <div class="row">
-                    <p id="dropfiletext" class="offset-m4 col m8">ou</p>
+                    <div id="dropfile" class="offset-m2 col m0" >Glissez votre fichier ou cliquez ici</div>
                   </div>
 
                   <div class="row">
@@ -56,7 +52,7 @@
 
                   <div class "row">
                     <div class="offset-m2 col m6">
-                      <a id="button-upload" class="waves-effect waves-light btn grey darken-3">Télécharger</a>
+                      <a id="button-upload" class="waves-effect waves-light btn grey darken-3">Envoyer</a>
                     </div>
                   </div>
 
@@ -65,6 +61,9 @@
                   </div>
 
               </article>
+
+                <div id=disabled></div>
+
             </div>
 
           </div>
@@ -110,4 +109,16 @@
                 return false;
     });
 
+
+    $('#dropfile').click(function(e) {
+    $(document).find('input[type="file"]').click();
+    });
+
+
+
+    function nextstep(){
+
+      $('#disabled').css("display", "none");
+    }
+    
 </script>
