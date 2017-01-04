@@ -7,7 +7,7 @@ class sharePDO extends SQLpdo{
 	}
 	
 	function SQL_Receiver($keyUser, $keyFold){
-		return $user = $this->fetch("SELECT NbrVisit, Name FROM ".PREFIX_DB."Receiver r LEFT JOIN ".PREFIX_DB."Fold f ON r.NameFold = f.ID WHERE UserKey = :userKey AND f.Name = :NameFold", array(':userKey' => $keyUser, ':NameFold' => $keyFold));
+		return $user = $this->fetch("SELECT NbrVisit, Name, NameFold FROM ".PREFIX_DB."Receiver r LEFT JOIN ".PREFIX_DB."Fold f ON r.NameFold = f.ID WHERE UserKey = :userKey AND f.Name = :NameFold", array(':userKey' => $keyUser, ':NameFold' => $keyFold));
 	}
 	
 	function SQL_ReceiverUpdate($visit, $key){
@@ -18,7 +18,7 @@ class sharePDO extends SQLpdo{
 	}
 	
 	function SQL_ListFile($fold){
-		return $this->fetchAll("SELECT * FROM ".PREFIX_DB."File file LEFT JOIN ".PREFIX_DB."Folder folder ON file.NameFold = folder.ID WHERE folder.ID = :IDfold AND ", array(':IDfold' => $fold));;
+		return $this->fetchAll("SELECT * FROM ".PREFIX_DB."File WHERE NameFold = :IDfold ", array(':IDfold' => $fold));;
 	}
 	
 }

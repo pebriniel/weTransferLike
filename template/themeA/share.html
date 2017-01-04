@@ -1,3 +1,5 @@
+{{>header}}
+
 
 {{^SHOW}}
 	Vous n'avez pas les droits pour pouvoir accéder à cela
@@ -6,13 +8,52 @@
 {{#SHOW}}
 	
 	<table width="100%">
-		{{#LIST}}
-			<tr>
-				<td>{{Name}}</td>
-				<td><a href="{{URL}}upload/{{}}/{{Name}}">{{OriginName}}</a></td>
-				<td>{{Date}}</td>
-			</tr>
-		{{/LIST}}
+		<form id="form-download" action="{{URL_}}downloadCustomArchive/" method="post">
+			{{#LIST}}
+				<tr>
+					<td>
+						<input type="checkbox" name="fileCheckBox[]" class="filled-in" value="{{Name}}" id="ID-{{Name}}" />
+						<label for="ID-{{Name}}"></label>
+					</td>
+					<td>{{Name}}</td>
+					<td><a href="{{URL_}}public/upload/{{fold}}/{{OriginName}}" download>{{OriginName}}</a></td>
+					<td>{{Date}}</td>
+				</tr>
+			{{/LIST}}
+			<input type="hidden" name="fold" value="{{fold}}"/>
+			<input type="hidden" name="keyUser" value="{{keyUser}}"/>
+			<tr><td colspan="3"><input type="submit" name="send" value="Télécharger" /></td></tr>
+		</form>
 	</table>
+	
+	<script>
+	$(document).ready(function(){
+		$('#form-download').on("submit", function(e){
+			e.preventDefault();
+
+			var dataform = $('#form-download').serialize();
+			
+			$.ajax({
+				type: 'POST',
+				url: '{{URL_}}downloadCustomArchive/',
+				data:  dataform,
+				dataType: "html",
+				success : function(da){
+					window.location = da;
+				},
+				error : function(da){
+					console.log(da);
+				}
+			});
+		});
+	});
+	</script>
+	
+	<style>
+		input[type="checkbox"], input[type="radio"]{
+			position: relative;
+			opacity: 1;
+		}
+	</style>
 	
 {{/SHOW}}
