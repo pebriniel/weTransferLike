@@ -3,16 +3,24 @@
 if(isset($index)){
 	require_once "inc/model/share.php";
 	
-	function CTRL_LoadShare($keyUser, $keyFold, $dir = __dir__){
+	function CTRL_LoadShare($keyUser = null, $keyFold = null, $dir = __dir__){
 		$model = new sharePDO();
 		 
-		if($user = $model->SQL_Receiver($keyUser, $keyFold)){
-			
+		$show = false;
+		if(!is_null($keyUser) && $user = $model->SQL_Receiver($keyUser, $keyFold))
+		{
 			$model->SQL_ReceiverUpdate($user['NbrVisit'], $keyUser);													
-			
-			$list = $model->SQL_ListFile($user['NameFold']);
-			
-			$arrayTpl = array('SHOW' => true, 'fold' => $user['Name'], 'keyUser' => $keyUser, 'LIST' => $list);
+			$show = true;
+		}
+		else if($user = $model->getFold($keyFold))
+		{
+			$show = true;
+		}
+		
+		if($show){
+			$list = $model->SQL_ListFile($user['iFold']);
+
+			$arrayTpl = array('SHOW' => true, 'fold' => $user['Name'], 'LIST' => $list);
 		}
 		else{
 			$arrayTpl = array('SHOW' => false);

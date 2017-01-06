@@ -38,6 +38,11 @@ class SQLpdo {
 	    return $sth->execute($execute);//execute la requette sql
 	}
 	
+	function del($sql, $execute=null){
+		$sth = $this->db->prepare($sql);//prepare SQL request
+	    return $sth->execute($execute);//execute la requette sql
+	}
+	
 	
 
 	function fetch($sql,$execute=null){
@@ -45,4 +50,6 @@ class SQLpdo {
 	    $sth->execute($execute);//execute la requette sql
 	    return $sth->fetch(PDO::FETCH_ASSOC);// recupère toutes les données
 	}
+	
+	
 }

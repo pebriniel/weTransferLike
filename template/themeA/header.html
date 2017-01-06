@@ -7,22 +7,190 @@
     <title>Popuptatoes</title>
     <link rel="stylesheet" type="text/css" href="{{URL_}}css/themeA/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
+ 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-		  
-   <style>
-      /* couleur lignes formulaire */
-       .row .input-field input:focus {
-         border-bottom: 0.2px solid #212121 !important;
-         box-shadow: 0 0.2px 0 0 #212121 !important
-       }
-    </style>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			/* execution du cron */
+			$.get('{{URL_}}cron/');
+
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+		});
+	</script>
+
+
+
 </head>
 
 <body>
 
+  <ul id="cbp-bislideshow" class="cbp-bislideshow">
+	<li><img src="{{URL_}}css/themeA/img/back1.svg" alt="image01"/></li>
+	<li><img src="{{URL_}}css/themeA/img/back2.svg" alt="image02"/></li>
+</ul>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- imagesLoaded jQuery plugin by @desandro : https://github.com/desandro/imagesloaded -->
+<script src="{{URL_}}js/jquery.imagesloaded.min.js"></script>
+<script src="{{URL_}}js/cbpBGSlideshow.min.js"></script>
+<script src="{{URL_}}js/modernizr.custom.js"></script>
+<script>
+	$(function() {
+		cbpBGSlideshow.init();
+	});
+</script>
+
+
+<script>
+var cbpBGSlideshow = (function() {
+
+	var $slideshow = $( '#cbp-bislideshow' ),
+		$items = $slideshow.children( 'li' ),
+		itemsCount = $items.length,
+		$controls = $( '#cbp-bicontrols' ),
+		navigation = {
+			$navPrev : $controls.find( 'span.cbp-biprev' ),
+			$navNext : $controls.find( 'span.cbp-binext' ),
+			$navPlayPause : $controls.find( 'span.cbp-bipause' )
+		},
+		// current item´s index
+		current = 0,
+		// timeout
+		slideshowtime,
+		// true if the slideshow is active
+		isSlideshowActive = true,
+		// it takes 3.5 seconds to change the background image
+		interval = 5500;
+
+	function init( config ) {
+
+		// preload the images
+		$slideshow.imagesLoaded( function() {
+
+			if( Modernizr.backgroundsize ) {
+				$items.each( function() {
+					var $item = $( this );
+					$item.css( 'background-image', 'url(' + $item.find( 'img' ).attr( 'src' ) + ')' );
+				} );
+			}
+			else {
+				$slideshow.find( 'img' ).show();
+				// for older browsers add fallback here (image size and centering)
+			}
+			// show first item
+			$items.eq( current ).css( 'opacity', 1 );
+			// initialize/bind the events
+			initEvents();
+			// start the slideshow
+			startSlideshow();
+
+		} );
+
+	}
+
+	function initEvents() {
+
+		navigation.$navPlayPause.on( 'click', function() {
+
+			var $control = $( this );
+			if( $control.hasClass( 'cbp-biplay' ) ) {
+				$control.removeClass( 'cbp-biplay' ).addClass( 'cbp-bipause' );
+				startSlideshow();
+			}
+			else {
+				$control.removeClass( 'cbp-bipause' ).addClass( 'cbp-biplay' );
+				stopSlideshow();
+			}
+
+		} );
+
+		navigation.$navPrev.on( 'click', function() {
+			navigate( 'prev' );
+			if( isSlideshowActive ) {
+				startSlideshow();
+			}
+		} );
+		navigation.$navNext.on( 'click', function() {
+			navigate( 'next' );
+			if( isSlideshowActive ) {
+				startSlideshow();
+			}
+		} );
+
+	}
+
+	function navigate( direction ) {
+
+		// current item
+		var $oldItem = $items.eq( current );
+
+		if( direction === 'next' ) {
+			current = current < itemsCount - 1 ? ++current : 0;
+		}
+		else if( direction === 'prev' ) {
+			current = current > 0 ? --current : itemsCount - 1;
+		}
+
+		// new item
+		var $newItem = $items.eq( current );
+		// show / hide items
+		$oldItem.css( 'opacity', 0 );
+		$newItem.css( 'opacity', 1 );
+
+	}
+
+	function startSlideshow() {
+
+		isSlideshowActive = true;
+		clearTimeout( slideshowtime );
+		slideshowtime = setTimeout( function() {
+			navigate( 'next' );
+			startSlideshow();
+		}, interval );
+
+	}
+
+	function stopSlideshow() {
+		isSlideshowActive = false;
+		clearTimeout( slideshowtime );
+	}
+
+	return { init : init };
+
+})();
+
+
+</script>
+
+
       <header>
-        <h1>POPUPTATOES</h1>
+        <img src="{{URL_}}/css/themeA/img/logo-couleur.svg" height="150px"/>
+
+
       </header>
 
       <main>

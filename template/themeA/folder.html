@@ -1,0 +1,28 @@
+{{>header}}
+
+
+{{#ERREUR}}
+	{{CONTENT}}
+{{/ERREUR}}
+{{^ERREUR}}
+<div class="row" id="resultat">
+	<div class="col s12 div-title">
+		{{#UPL}}
+			<h5 class="valign">Félicitation votre fichier est envoyé</h5>
+		{{/UPL}}
+		{{^UPL}}
+			<h5 class="valign">Lien de partage des fichiers</h5>
+		{{/UPL}}
+	
+		<div class="input-field col s6">
+			<p>Vos fichiers ont été transférés avec succès !</p>
+			Votre fichier est stocké jusqu'au : {{DATE}}<br/>
+			<input value="{{URL_ARCHIVE}}" name="url" type="text">
+			<img src="{{URL_}}css/themeA/img/patate.svg" />
+
+		</div>
+	</div>
+</div>
+			
+{{/ERREUR}} 
+

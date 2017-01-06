@@ -4,74 +4,91 @@
 	@TODO : /createArchive/ à revoir
 */
 
-	require_once("inc/libs.php");
+require_once("inc/libs.php");
 
-	$router->map('GET', '/', function(){
-		$load = true;
-		mustacheLoad('body');
-	}, 'home');
-	
-	$router->map('GET', '/404/', function(){
-		echo "la page n'existe pas";
-	}, '404');
-	
-	//ajax création d'archive custom
-	$router->map('POST', '/downloadCustomArchive/', function(){
-		$index = true;
-		require_once "inc/controler/CTRLCustomArchive.php";
-		echo customCreateArchive();
-		
-	}, 'downloadCustomArchive');
-	
-	//ajax création d'archive custom
-	$router->map('GET', '/cron/', function(){
-		$index = true;
-		require_once "inc/controler/CTRLCron.php";
-		cronDeleteFile();
-		 
-	}, 'cron');
+$router->map('GET', '/', function(){
+	$load = true;
+	mustacheLoad('body');
+}, 'home');
 
-	//@TODO
-	//on crée l'archive après avoir appuyer sur le boutton terminé
-	$router->map('POST', '/createArchive/', function(){
-		$index = true;
-		require_once "inc/controler/CTRLArchive.php";
-		CTRL_CreateArchive("586b7588c414f");
-		
-	}, 'createArchive');
-	
-	//on affiche la liste des dossiers
-	$router->map('GET', '/share/[h:keyFold]/[h:keyUser]/', function($keyFold, $keyUser){
-		$index = true;
-		
-		require_once "inc/controler/CTRLShare.php";
-		$arrayTpl = CTRL_LoadShare($keyUser, $keyFold, __dir__);
-		
-		mustacheLoad('share', $arrayTpl);
-	}, 'share');
-	
-	$router->map('POST', '/uploadAjax/', function(){
-		$index = true;
-		require_once "inc/controler/CTRLInfosaved.php";
+$router->map('GET', '/404/', function(){
+	echo "la page n'existe pas";
+}, '404');
 
-		CTRL_InfoSaved();
-		
-	}, 'uploadAjax');
+//ajax création d'archive custom
+$router->map('POST', '/downloadCustomArchive/', function(){
+	$index = true;
+	require_once "inc/controler/CTRLCustomArchive.php";
+	echo customCreateArchive();
 	
-	$router->map('GET', '/deleteFileAjax/', function(){
-		$key = "586b7588c414f";
-		$file = "";
-		
-	}, 'deleteFileAjax');
-	
-	
-	$match = $router->match();
+}, 'downloadCustomArchive');
 
-	// call closure or throw 404 status
-	if( $match && is_callable( $match['target'] ) ) {			
-		call_user_func_array( $match['target'], $match['params'] );
-	} else {
-		// no route was matched
-		// header("Location: ".URL_."404/");
-		header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
-	}
+//ajax création d'archive custom
+$router->map('GET', '/cron/', function(){
+	$index = true;
+	require_once "inc/controler/CTRLCron.php";
+	cronDeleteFile();
+}, 'cron');
+
+//l'utilisateur finalise l'envoie 
+$router->map('GET', '/folder/[h:key]/', function($key){
+	$index = true;
+	require_once "inc/controler/CTRLPageShare.php";
+	$arrayTpl = CTRLPageShare($key);
+	mustacheLoad('folder', $arrayTpl);
+}, 'folder');
+
+//on affiche la liste des dossiers
+$router->map('GET', '/share/[h:keyFold]/[h:keyUser]/', function($keyFold, $keyUser){
+	$index = true;
+	
+	require_once "inc/controler/CTRLShare.php";
+	$arrayTpl = CTRL_LoadShare($keyUser, $keyFold, __dir__);
+	
+	mustacheLoad('share', $arrayTpl);
+}, 'share');
+
+//on affiche la liste des dossiers
+$router->map('GET', '/share/[h:keyFold]/', function($keyFold){
+	$index = true;
+	
+	require_once "inc/controler/CTRLShare.php";
+	$arrayTpl = CTRL_LoadShare(null, $keyFold, __dir__);
+	
+	mustacheLoad('share', $arrayTpl);
+}, 'shareSolo');
+
+$router->map('POST', '/uploadAjax/', function(){
+	$index = true;
+	require_once "inc/controler/CTRLInfosaved.php";
+
+	CTRL_InfoSaved();
+	
+}, 'uploadAjax');
+
+$router->map('POST', '/deleteFileAjax/', function(){
+	$index = true;
+	require_once "inc/controler/CTRLDeleteFile.php";
+
+	CTRL_deleteFile();
+}, 'deleteFileAjax');
+
+$router->map('POST', '/UPLfiles/', function(){
+	$index = true;
+	require_once "inc/controler/CTRLFiles.php";
+
+	CTRL_FilesSaved();
+
+}, 'UPLfiles');
+
+
+$match = $router->match();
+
+// call closure or throw 404 status
+if( $match && is_callable( $match['target'] ) ) {			
+	call_user_func_array( $match['target'], $match['params'] );
+} else {
+	// no route was matched
+	// header("Location: ".URL_."404/");
+	header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+}

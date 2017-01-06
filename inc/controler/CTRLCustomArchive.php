@@ -10,25 +10,30 @@ if(isset($index)){
 	
 		$dir = "public/upload/".$key."/";
 		
-		$fold = SQL_Fold($key, $keyUser);
+		$fold = getFold($key);
 		
-		if($file = SQl_ListFile($fileCheckBox, $fold['fID'])){
-		
-			$zip = new ZipArchive();
-			$filename = "public/tmp/".uniqid().".zip";
+		if(is_array($fileCheckBox)){
+			if($file = SQl_ListFile($fileCheckBox, $fold['iFold'])){
+			
+				$zip = new ZipArchive();
+				$filename = "public/tmp/".uniqid().".zip";
 
-			if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
-				exit("Impossible d'ouvrir le fichier <$filename>\n");
-			}
-			
-			foreach($file AS $key => $val){
-				$zip->addFile($dir.$val['OriginName'], $val['OriginName']);
-			}
+				if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+					exit("Impossible d'ouvrir le fichier <$filename>\n");
+				}
+				
+				foreach($file AS $key => $val){
+					$zip->addFile($dir.$val['OriginName'], $val['OriginName']);
+				}
 
-			$zip->close();
-			
-			
-			return URL_.$filename;
+				$zip->close();
+				
+				
+				return URL_.$filename;
+			}
+			else{
+				return false;
+			}
 		}
 		else{
 			return false;

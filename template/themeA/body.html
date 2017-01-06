@@ -1,163 +1,192 @@
 {{>header}}
  <!-- FORMULAIRE -->
             <div class="row">
-              <form class="offset-m1 col m4" id="myForm">
-                <div class="row">
-                  <div class="input-field col m12">
-                    <input id="mail_exp" type="email" class="validate">
-                    <label for="mail_exp" class="grey-text text-darken-4">Votre mail</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col m12">
-                    <input id="mail_rec" type="email" class="validate">
-                    <label for="mail_rec" class="grey-text text-darken-4">Mail de votre destinataire</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col m12">
-                    <input id="subject" type="text" class="validate" maxlength="50">
-                    <label for="subject" class="grey-text text-darken-4">Sujet de votre message</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col m12">
-                    <input id="content" type="text" class="validate">
-                    <label for="content" class="grey-text text-darken-4">Contenu de votre message</label>
-                  </div>
-                </div>
-                  <div class="row">
-                    <div class="offset-m4 col m6">
-                      <a id="button-next" class="waves-effect waves-light btn grey darken-3" onclick="return nextstep();">Suivant</a>
-                    </div>
-                  </div>
-              </form>
+              <form class="offset-m1 col m4" id ="block1" name="form">
+				 <div class="row">
+				   <div class="input-field col m12">
+					 <input id="mail_exp" type="email" name="emailExp" class="validate">
+					 <label for="mail_exp" class="grey-text text-darken-4">Votre mail</label>
+				   </div>
+				 </div>
+				 <div class="row">
+				   <div class="input-field col m12">
+					 <input id="mail_rec" type="email" name="emailRec" class="validate">
+					 <label for="mail_rec" class="grey-text text-darken-4">Mail de votre destinataire</label>
+				   </div>
+				 </div>
+				 <div class="row">
+				   <div class="input-field col m12">
+					 <input id="subjet" type="text" name="object" class="validate">
+					 <label for="subjet" class="grey-text text-darken-4">Sujet de votre message</label>
+				   </div>
+				 </div>
+				 <div class="row">
+				   <div class="input-field col m12">
+					 <input id="content" type="text" name="message" class="validate">
+					 <label for="content" class="grey-text text-darken-4">Contenu de votre message</label>
+				   </div>
+				 </div>
+				   <div class="row">
+					 <div class="offset-m4 col m6 div-button-next">
+					   <input id="button-next" class="waves-effect waves-light btn grey darken-3" type="submit" name="submit" value="Suivant" />
+					 </div>
+				   </div>
+			   </form>
 
 
         <!-- BLOC UPLOAD -->
-            <div class="row">
-              <article class="offset-m1 col m4">
-
-                  <div class="row">
-                    <div id="dropfile" class="offset-m2 col m0" >Glissez votre fichier ou cliquez ici</div>
-                  </div>
-
-                  <div class="row">
-                    <input id="uploadfile" class="offset-m2 col m10" type="file"/>
-                  </div>
-
-                  <div class"row">
-                    <div id="filelist" class="offset-m4 col m8">liste des fichiers</div>
-                  </div>
-
-                  <div class "row">
-                    <div class="offset-m2 col m6">
-                      <a id="button-upload" class="waves-effect waves-light btn grey darken-3">Envoyer</a>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div id="filesupload" class="offset-m4 col m8">liste fichiers uploadés </div>
-                  </div>
-
-              </article>
-
-                <div id=disabled></div>
-
+               <div class="row">
+				<article class="offset-m1 col m4">
+					<div>
+						<form method="post" action="{{URL_}}UPLfiles/" enctype="multipart/form-data" name="form2" id="block2">
+						  <div class="file-field input-field">
+							<div class="btn grey darken-3" id="button-upload">
+							  <span>Parcourir</span>
+							  <input type="file" id="files" name="files[]" multiple />
+							</div>
+							<div class="file-path-wrapper">
+							  <input class="file-path validate" type="text" name="test" placeholder="Téléchargez un ou plusieurs fichiers" />
+							</div>
+						  </div>
+							<input type="hidden" value="586b7588c414f" id="folder" name="folder"/>
+						</form>
+					</div>
+					<div class="list-file">
+						
+					</div>
+					<div class="row">
+						<div class="offset-m4 col m6" id="button-end-div">
+							<a href="" id="button-end" class="waves-effect waves-light btn grey darken-3 btn-finale">Terminé</a>
+						</div>
+					</div>
+				</article>
+				 <div id="disabled"></div>
+				</div>
+				
             </div>
 
-          </div>
-
-
+<style>
+	.list-file{
+		padding-left: 1em;
+		padding-right: 1em;
+		overflow: auto;
+		height: 220px;
+	}
+	.list-file .remove{
+		margin-right: 1em;
+	}
+	.list-file .item{
+		display: block;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.1);
+		margin-top: 1em;
+	}
+</style>
+		  
 <script>
+$(document).ready(function() {
+	var folder = null;
+	var send = true;
+	
+		/* -- on envoie le lock 1 */
+		$('#button-next').click(function(e){
+			e.preventDefault();
+			if(send){
+				$.post('{{URL_}}uploadAjax/', $('#block1').serialize())
+				.done(function(data){
+					data = JSON.parse(data);
 
+					if(data['STATUT'] == 1){
+						send = false;
+						folder = data['CONTENT'];
+						$('#folder').val(folder);
+						$('#disabled').css("display", "none");
+						$(".btn-finale").attr('href', '{{URL_}}folder/'+folder+'/');
+						$(".div-button-next").css("display", "none");
+					}
+					else{
+						toastr["warning"](data['CONTENT']);
+					}
 
-    $(document).on('dragenter', '#dropfile', function() {
-              $(this).css('background', '#424242');
-              return false;
-    });
+				})
 
-    $(document).on('dragover', '#dropfile', function(e){
-              e.preventDefault();
-              e.stopPropagation();
-              $(this).css('background', '#424242');
-              return false;
-    });
+				.fail(function(data) {
+					alert('Error: ' + data);
+				});
+			}
+		});
 
-    $(document).on('dragleave', '#dropfile', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              $(this).css('background', '#424242');
-              return false;
-    });
+        /* - on envoie le block 2 */
+        $('#files').on('change', function(e){
+      //  $('#block2').on('submit', function(e){
+            e.preventDefault();
 
+            var $form = $('#block2');
+            var formdata = (window.FormData) ? new FormData($form[0]) : null;
+            var data = (formdata !== null) ? formdata : $form.serialize();
 
-    $(document).on('drop', '#dropfile', function(e) {
-                if(e.originalEvent.dataTransfer){
-                           if(e.originalEvent.dataTransfer.files.length) {
-                                       // Stop the propagation of the event
-                                       e.preventDefault();
-                                       e.stopPropagation();
-                                       $(this).css('background', '#616161');
-                                       // Main function to upload
-                                       upload(e.originalEvent.dataTransfer.files);
-                           }
-                }
-                else {
-                           $(this).css('background', '#424242');
-                }
-                return false;
-    });
+            $.ajax( {
+              url: '{{URL_}}UPLfiles/',
+              type: 'POST',
+              contentType: false, // obligatoire pour de l'upload
+              processData: false, // obligatoire pour de l'upload
+              data: data,
+              success: function (response) {
+				console.log(response);
+				response = JSON.parse(response);
+				if(response['STATUT'] == 1){
+					for(var i = 0; i < response['NAMEORIGIN'].length; i ++){						
+						if(response['ERRORFILE'][i] == 1){
+							$('.list-file').append('<div class="item item-'+response['NAMEFILERDG'][i]+'"><div data-id='+response['NAMEFILERDG'][i]+' class="remove waves-effect red darken-1 btn"><i>X</i></div>'+response['NAMEORIGIN'][i]+'</div>');
+						}
+						else{
+							toastr["warning"](response['ERRORMESS'][i]);
+						}
+					}
+				}
+				else{
+					toastr["warning"](response['CONTENT']);
+				}
+              }
+            })
 
+          } );
 
-    $('#dropfile').click(function(e) {
-    $(document).find('input[type="file"]').click();
-    });
+		  
+		  $('.list-file').on('click', '.remove', function(){
+			var key = $(this).data('id');
+			 $.ajax({
+				type: 'POST',
+				url: '{{URL_}}deleteFileAjax/',
+				data:  'fold='+folder+'&file='+key,
+				dataType: "html",
+				success : function(data){
+					data = JSON.parse(data);
+					if(data['STATUT'] == 1){
+						$('.item-'+key).remove();
+					}
+					else{
+						toastr["warning"](response['CONTENT']);
+					}
+				},
+				error : function(data){
+					console.log(data);
+				}
+			});
+		  });
 
-
-
-    function nextstep(){
-
-      $('#disabled').css("display", "none");
-    }
-
-
-
-// que se passe t-il au chargement de la page
-//$(document).ready(function() {
- //verify("#mail_exp", "Veuillez entrer un mail valide");
- //verify("#mail_rec", "Veuillez entrer un mail valide");
- //verify("#content", "Veuillez entrer un contenu valide");
- //verify("#subject", "Veuillez entrer un sujet valide");
- //});
-
-
-
-  //  function verify(key, text){
-  //     $(key).focusout(function(){
-  //    if ($(key).hasClass("validate", "invalid")){
-  //      alert(text);
-  //    }
-  //    else {
-  //    }
-  //  });
-  // }
-
-  var activebuttonnext = false;
-
-  $(document).ready(function() {
-    $("#button-next").addClass("disabled");
-
-    verify("#mail_exp");
-    verify("#mail_rec");
-    verify("#content");
-    verify("#subject");
-   });
+		  
+	/* on vérifie que tous les inputs du block 1 est fonctionnel */
+	$("#button-next").addClass("disabled");
+		verify("#mail_exp");
+		verify("#mail_rec");
+		verify("#content");
+		verify("#subject");
+	});
 
     function verify(key){
       $(key).keyup(function(){
-          console.log($(this));
-          if($(key).hasClass("invalid") || $(key).val()=='') {
+        if($(key).hasClass("invalid") || $(key).val()=='') {
             $("#button-next").addClass("disabled");
           }
 
@@ -165,19 +194,16 @@
       });
     }
 
-    function verifyAll(inputs){
-      var error= 0;
-      for(var i=0; i<inputs.length; i++){
-        if($(inputs[i]).hasClass("invalid") || $(inputs[i]).val()=='') {
-          error++;
-        }
-      }
-        if(error==0){
-          console.log("coucou");
-          $("#button-next").removeClass("disabled");
-        }
-        console.log(error);
-
-    }
-
+	function verifyAll(inputs){
+		var error = 0;
+		for(var i = 0; i < inputs.length; i++){
+			if($(inputs[i]).hasClass("invalid") || $(inputs[i]).val() == '') {
+				error++;
+			}
+		}
+		if(error == 0){
+			<!-- $("#button-next").removeClass("disabled"); -->
+			$("i").removeClass("disabled"); 
+		}
+	}
 </script>

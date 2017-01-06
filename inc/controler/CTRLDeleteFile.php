@@ -11,8 +11,12 @@ if(isset($index)){
 			if($f = $pdo->fetch("SELECT file.ID AS iFile, OriginName FROM ".PREFIX_DB."File file LEFT JOIN ".PREFIX_DB."Fold fold ON file.NameFold = fold.ID WHERE file.Name = :IDFile AND fold.Name = :IDFold ", array(':IDFile' => $file, ':IDFold' => $key))){			
 				$pdo->del("DELETE FROM ".PREFIX_DB."File WHERE ID = :id", array(":id" => $f['iFile']));
 				
-				if(file_exists(FOLDERUPL.$key."/".$f['OriginName'])){
-					unlink(FOLDERUPL.$key."/".$f['OriginName']);
+				if(file_exists(FOLDER_UPL.$key."/".$f['OriginName'])){
+					unlink(FOLDER_UPL.$key."/".$f['OriginName']);
+					echo json_encode(array("STATUT" => 1, "FILE" => $key));
+				}
+				else{ 
+					echo json_encode(array("STATUT" => 1, "FILE" => $key));
 				}
 			}
 		}

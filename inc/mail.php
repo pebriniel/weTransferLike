@@ -19,7 +19,7 @@ function function_mail($mail, $sujet, $fichier, $var){
 
 	//=====Déclaration des messages au format texte et au format HTML.
 	//$message_html = "<html><head></head><body>Bienvenue <b>$pseudo</b> :) <br/> <br/>Lien d'activation : <br/><a href=$url_activation>Lien d'activation</a></body></html>";
-	$message_html = file_get_contents("$fichier");
+	$message_html = file_get_contents(FOLD_EMAIL.$fichier.".html");
 	foreach($var AS $key => $v){
 		$message_html = preg_replace("#".$key."#", $v, $message_html);
 	}
@@ -32,8 +32,8 @@ function function_mail($mail, $sujet, $fichier, $var){
 	//==========
 
 	//=====Création du header de l'e-mail.
-	$header = "From: \"Boussad Sadadou\"<boussad.s@codeur.online >".$passage_ligne;
-	$header.= "Reply-to: \"Boussad Sadadou\" <boussad.s@codeur.online >".$passage_ligne;
+	$header = "From: \"no reply\"<noreply@popuptatoes.fr>".$passage_ligne;
+	$header.= "Reply-to: \"Utilisateur\" <".$mail.">".$passage_ligne;
 	$header.= "MIME-Version: 1.0".$passage_ligne;
 	if(!$_gmail){ $header.= 'Content-type: text/html; charset=utf-8'."".$passage_ligne; }
 	if($_gmail){ $header.= "Content-Type: multipart/mixed;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne; }

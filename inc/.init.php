@@ -9,5 +9,7 @@
 	define('FOLD_EMAIL', 'template/email/');
 	define('PREFIX_DB', 'POP_');
 	define('TPL_EMP', 'template/themeA');
+	define('FOLDER_UPL', 'public/upload/');
 
 	define('EXT_MU_TPL', '.html');
+	
